@@ -36,3 +36,14 @@ def obtener_ID(farmaco):
         return ID_Farmaco
     else:
         return ''
+
+def obtenerFenotipo(gen,alelo1,alelo2):
+   
+
+    #url="https://api.cpicpgx.org/v1/diplotype?genesymbol=eq.CYP2B6&diplotype=eq.*2/*2"
+    url="https://api.cpicpgx.org/v1/diplotype?genesymbol=eq."+gen+"&diplotype=eq."+alelo1+"/"+alelo2
+
+    respuesta= requests.get(url)
+    datos = respuesta.json()
+
+    return datos
