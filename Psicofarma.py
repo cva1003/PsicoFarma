@@ -1,21 +1,12 @@
 import streamlit as st
+import requests
 
 st.title("Psicofarma")
 
 firebase = firebase.FirebaseApplication("https://psicofarma.streamlit.app/",None)
 
-def getAlelos(gen):
-    '''
-    Función que dado un gen proporciona todos los alelos encontrados para dicho gen. Para realizar esta consulta, emplea las guías del CPIC
-    
-    Parametros:
-        gen: String
-        Nombre del gen a buscar
+def obtenerAlelos(gen):
 
-    Returns:
-        ListaFinalAlelos : list
-        Lista de alelos para dicho gen, obtenidos del CPIC
-    '''
     url = "https://api.cpicpgx.org/v1/allele?genesymbol=eq."+ gen
     
     respuesta = requests.get(url)
@@ -31,3 +22,17 @@ def getAlelos(gen):
     ListaFinalAlelos = (list(setAlelos))
     ListaFinalAlelos.sort()
     return ListaFinalAlelos
+
+def obtener_ID(farmaco):
+
+    #https://api.cpicpgx.org/v1/drug?name=eq.abacavir
+    url = "https://api.cpicpgx.org/v1/drug?name=eq."+farmaco
+    
+    respuesta = requests.get(url)
+    obtenido = respuesta.json()
+    
+    if len(obtenido) != 0:
+        ID_Farmaco = obtenido[0]['drugid']
+        return ID_Farmaco
+    else:
+        return ''
