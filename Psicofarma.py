@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from firebase import firebase
 
 st.title("Psicofarma")
 
