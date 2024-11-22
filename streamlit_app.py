@@ -298,7 +298,7 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
 
     # Salida del PDF
     pdf_output = BytesIO()
-    pdf_output.write(pdf.output(dest="S"))
+    pdf_output.write(pdf.output(dest="S").encode("latin1"))
     pdf_output.seek(0)
     return pdf_output
 
@@ -407,22 +407,50 @@ else:
     # Sección 3: Selección de Genes y Medicamentos
     st.header("🧬 Selección de Genes y Medicamentos")
     with st.container():
-        gen = st.selectbox("Selecciona un gen", ["CYP2D6", "CYP2C19"])
-        medicamento = st.selectbox("Selecciona un medicamento", ["Venlafaxina", "Risperidsona", "Haloperidol","Aripiprazol","Citalopram","Escitalopram","Sertralina"])
-        alelo = st.selectbox("Selecciona un alelo", ["*1/*1xN", "*1/*2xN", "*1/*10", "*1/*9", "*1/*41", "*1/*17", "*1/*29", "*1/*10x3", "*2x2/*10", 
-        "*4/*10", "*4/*41", "*10/*10", "*10/*41", "*10/*29", "*9/*14", "*17/*41", "*1/*5", "*1/*4", "*3/*4", 
-        "*4/*4", "*5/*5", "*5/*6", "*1/*22", "*1/*25", "*22/*25", "*1/*3xN", "*2/*3xN", "*1/*2", "*2/*2", "*35/*2", 
-        "*1", "*2", "*9/*2", "*17/*2", "*29/*2", "*33", "*35", "*39", "*41/*2", "*9", "*10/*2", "*14", "*3", "*3/*2", 
-        "*4", "*4/*2", "*5", "*6", "*6/*2", "*7", "*8", "*11", "*12", "*13", "*15", "*18", "*19", "*20", "*21", "*31", 
-        "*36", "*36/*2", "*38", "*40", "*42", "*114", "*17/*17", "*1/*17", "*1/*1", "*1/*9", "*9/*17", "*9/*9", "*1/*2", 
-        "*1/*3", "*2/*17", "*3/*17", "*2/*9", "*3/*9", "*2/*2", "*3/*3", "*2/*3", "*1/*12", "*2/*12","*12/*14"])
+        genes = st.selectbox("Selecciona un gen", ["CYP2D6", "CYP2C19"])
+        medicamentos = st.selectbox("Selecciona un medicamento", ["Venlafaxina", "Risperidsona", "Haloperidol","Aripiprazol","Citalopram","Escitalopram","Sertralina"])
+        tipos_de_alelo = st.selectbox("Selecciona un alelo", [
+    "*1/*1xN", "*1/*2xN", "*1/*10", "*1/*9", "*1/*41", "*1/*17", "*1/*29", "*1/*10x3", "*2x2/*10", 
+    "*4/*10", "*4/*41", "*10/*10", "*10/*41", "*10/*29", "*9/*14", "*17/*41", "*1/*5", "*1/*4", "*3/*4", 
+    "*4/*4", "*5/*5", "*5/*6", "*1/*22", "*1/*25", "*22/*25", "*1/*3xN", "*2/*3xN", "*1/*2", "*2/*2", "*35/*2", 
+    "*1", "*2", "*9/*2", "*17/*2", "*29/*2", "*33", "*35", "*39", "*41/*2", "*9", "*10/*2", "*14", "*3", "*3/*2", 
+    "*4", "*4/*2", "*5", "*6", "*6/*2", "*7", "*8", "*11", "*12", "*13", "*15", "*18", "*19", "*20", "*21", "*31", 
+    "*36", "*36/*2", "*38", "*40", "*42", "*114", "*17/*17", "*1/*17", "*1/*1", "*1/*9", "*9/*17", "*9/*9", "*1/*2", 
+    "*1/*3", "*2/*17", "*3/*17", "*2/*9", "*3/*9", "*2/*2", "*3/*3", "*2/*3", "*1/*12", "*2/*12", "*12/*14"
+])
 
     # Mostrar recomendación
     st.subheader("🔍 Recomendación")
-    recomendacion = "Tratamiento con dosis normal"
-    st.success(f"**{recomendacion}**")
+    recomendacion = ""
 
-    st.markdown("---")
+    # Bucle para buscar en el diccionario y construir la recomendación
+    for gen in genes:
+        for medicamento in medicamentos:
+            for tipo_de_alelo in tipos_de_alelo:
+                # Comprobar si el gen existe en el diccionario
+                if gen in diccionario_combinado:
+                    # Comprobar si el medicamento existe para el gen
+                    if medicamento in diccionario_combinado[gen]:
+                        # Obtener el tratamiento para el alelo, si existe
+                        tratamiento = diccionario_combinado[gen].get(medicamento, {}).get(tipo_de_alelo, "Alelo no encontrado para este medicamento")
+                        
+                        # Agregar la recomendación a la variable 'recomendacion'
+                        recomendacion += f"Tratamiento para {medicamento} y alelo {tipo_de_alelo} en gen {gen}: {tratamiento}\n"
+                        
+                        # Mostrar la recomendación en la interfaz de Streamlit
+                        st.success(f"**Tratamiento para {medicamento} y alelo {tipo_de_alelo} en gen {gen}: {tratamiento}**")
+                    else:
+                        st.warning(f"El medicamento {medicamento} no está listado para el gen {gen}.")
+                else:
+                    st.warning(f"El gen {gen} no está en el diccionario.")
+
+    # Si hay alguna recomendación generada, se puede mostrar o utilizar
+    if recomendacion:
+        st.subheader("Recomendación Final")
+        st.text(recomendacion)  # Mostrar la recomendación acumulada
+        st.success(f"**{recomendacion}**")
+
+        st.markdown("---")
 
     # Resumen en tarjeta
     st.header("📋 Resumen")
@@ -437,7 +465,7 @@ else:
         **Fuma o ha fumado:** {fumador}  
         **Gen seleccionado:** {gen}  
         **Medicamento seleccionado:** {medicamento}  
-        **Alelo seleccionado:** {alelo}  
+        **Alelo seleccionado:** {tipos_de_alelo}  
         **Recomendación:** {recomendacion}
         """)
 
@@ -450,12 +478,11 @@ else:
             sexo=sexo,
             fecha_nac=fecha_nac.strftime('%d/%m/%Y'),
             ejercicio=ejercicio,
-            enfermedades=enfermedades,
             alcohol=alcohol,
             fumador=fumador,
             gen=gen,
             medicamento=medicamento,
-            alelo=alelo,
+            alelo=tipos_de_alelo,
             recomendacion=recomendacion
         )
         st.download_button(
