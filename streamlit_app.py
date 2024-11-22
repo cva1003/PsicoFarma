@@ -260,7 +260,7 @@ import time
 
 
 
-def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion, enfermedades):
+def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, enfermedades, alcohol, fumador, gen, medicamento, alelo, recomendacion):
 
     pdf = FPDF()
     pdf.add_page()
