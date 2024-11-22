@@ -359,8 +359,7 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, enfermedades, alcohol,
     pdf_output.seek(0)
     return pdf_output
 
-if "enfermedades" not in st.session_state:
-    st.session_state["enfermedades"] = []
+
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
