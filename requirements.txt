@@ -1,3 +1,5 @@
 streamlit
 unicode
 datetime
+io
+fpdf

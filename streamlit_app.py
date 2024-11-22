@@ -202,65 +202,91 @@ from io import BytesIO
 import time
 
 
-# Función para generar el PDF con el logo centrado
+
 def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion):
     pdf = FPDF()
     pdf.add_page()
     
-    # Tamaño y posición del logo en el PDF
-    logo_width = 90  # Anchura del logo en mm
-    page_width = 210  # Anchura total de la página A4
+    # Configuración general del PDF
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_margins(15, 15, 15)
+
+    # Tamaño y posición del logo
+    logo_width = 90  # Ancho del logo en mm
+    page_width = 210  # Ancho total de la página A4
     logo_x = (page_width - logo_width) / 2  # Posición horizontal centrada
-    logo_y = 20  # Posición vertical
+    logo_y = 15  # Posición vertical
 
     # Insertar logo
     pdf.image("logo.png", x=logo_x, y=logo_y, w=logo_width)
 
-    # Título debajo del logo
-    pdf.set_font("Arial", style="B", size=16)
-    pdf.ln(logo_y + 50)  # Espaciado hacia abajo
-    pdf.cell(0, 10, "Recomendaciones Farmacogenéticas", ln=True, align="C")
-    pdf.ln(10)
+    # Título principal
+    pdf.set_font("Arial", style="B", size=18)
+    pdf.set_text_color(33, 37, 41)  # Gris oscuro
+    pdf.ln(logo_y + 50)  # Espaciado debajo del logo
+    pdf.cell(0, 10, "Informe Médico Personalizado", ln=True, align="C")
+    pdf.ln(5)
 
     # Línea separadora
-    pdf.set_draw_color(0, 123, 255)  # Azul
+    pdf.set_draw_color(100, 100, 100)  # Gris
     pdf.set_line_width(0.5)
-    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.line(15, pdf.get_y(), 195, pdf.get_y())
     pdf.ln(10)
 
-    # Contenido del PDF
-    pdf.set_font("Arial", size=12)
+    # Información personal
+    pdf.set_font("Arial", style="B", size=14)
     pdf.set_text_color(0, 0, 0)
-
-    pdf.cell(0, 10, "Información Personal:", ln=True, align="L")
+    pdf.cell(0, 10, "1. Información Personal", ln=True, align="L")
+    pdf.set_font("Arial", size=12)
+    pdf.ln(5)
     pdf.cell(0, 10, f"Nombre: {nombre}", ln=True)
     pdf.cell(0, 10, f"Edad: {edad} años", ln=True)
     pdf.cell(0, 10, f"Sexo: {sexo}", ln=True)
     pdf.cell(0, 10, f"Fecha de nacimiento: {fecha_nac}", ln=True)
-    pdf.ln(5)
+    pdf.ln(10)
 
-    pdf.cell(0, 10, "Estilo de Vida:", ln=True, align="L")
+    # Estilo de vida
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(0, 10, "2. Estilo de Vida", ln=True, align="L")
+    pdf.set_font("Arial", size=12)
+    pdf.ln(5)
     pdf.cell(0, 10, f"Ejercicio regular: {'Sí' if ejercicio == 'Sí' else 'No'}", ln=True)
     pdf.cell(0, 10, f"Consumo de alcohol: {'Sí' if alcohol == 'Sí' else 'No'}", ln=True)
     pdf.cell(0, 10, f"Fuma o ha fumado: {'Sí' if fumador == 'Sí' else 'No'}", ln=True)
-    pdf.ln(5)
+    pdf.ln(10)
 
-    pdf.cell(0, 10, "Información Genética y Médica:", ln=True, align="L")
-    pdf.cell(0, 10, f"Gen seleccionado: {gen}", ln=True)
-    pdf.cell(0, 10, f"Medicamento seleccionado: {medicamento}", ln=True)
-    pdf.cell(0, 10, f"Alelo seleccionado: {alelo}", ln=True)
+    # Información genética y médica
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(0, 10, "3. Información Genética y Médica", ln=True, align="L")
+    pdf.set_font("Arial", size=12)
     pdf.ln(5)
+    pdf.cell(0, 10, f"Gen evaluado: {gen}", ln=True)
+    pdf.cell(0, 10, f"Medicamento evaluado: {medicamento}", ln=True)
+    pdf.cell(0, 10, f"Alelo identificado: {alelo}", ln=True)
+    pdf.ln(10)
 
-    pdf.set_text_color(220, 53, 69)
-    pdf.cell(0, 10, "Recomendación:", ln=True, align="L")
+    # Recomendaciones
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.set_text_color(220, 53, 69)  # Rojo profesional
+    pdf.cell(0, 10, "4. Recomendación Personalizada", ln=True, align="L")
+    pdf.set_font("Arial", size=12)
     pdf.set_text_color(0, 0, 0)
-    pdf.multi_cell(0, 10, recomendacion, align="L")
     pdf.ln(5)
+    pdf.multi_cell(0, 10, recomendacion, align="J")
+    pdf.ln(10)
 
+    # Línea final para cerrar el informe
+    pdf.set_draw_color(169, 169, 169)  # Gris claro
+    pdf.set_line_width(0.5)
+    pdf.line(15, pdf.get_y(), 195, pdf.get_y())
+    pdf.ln(10)
+
+    # Salida del PDF
     pdf_output = BytesIO()
     pdf_output.write(pdf.output(dest="S").encode("latin1"))
     pdf_output.seek(0)
     return pdf_output
+
 
 # Centrar logo en la página web
 # Configuración de la página principal
@@ -308,42 +334,77 @@ else:
     # Página principal de la aplicación
     st.image("logo.png", width=250)
     st.title("Recomendaciones Farmacogenéticas")
-    st.write("Esta aplicación proporciona recomendaciones basadas en genes y medicamentos.")
+    st.write("Introduzca los datos del paciente, y luego presione el botón para obtener la recomendación. Para más información visite: [Guías CPIC](https://cpicpgx.org/guidelines/)")
 
-    # Formulario de entrada
-    nombre = st.text_input("Nombre y apellidos")
-    edad = st.number_input("Edad")
-    sexo = st.selectbox("Sexo", ["Hombre", "Mujer"])
-    fecha_nac = st.date_input("Fecha de nacimiento")
-    ejercicio = st.radio("¿Realizas ejercicio regularmente?", ["Sí", "No"])
-    alcohol = st.radio("¿Consumes alcohol regularmente?", ["Sí", "No"])
-    fumador = st.radio("¿Fumas o has fumado alguna vez?", ["Sí", "No"])
-    gen = st.selectbox("Selecciona un gen", ["CYP2D6"])
-    medicamento = st.selectbox("Selecciona un medicamento", ["Venlafaxina"])
-    alelo = st.selectbox("Selecciona un alelo", ["*1/*10", "*1/*2", "*2/*2"])
-    recomendacion = "Tratamiento con dosis normal"  # Este valor puedes calcularlo dinámicamente
+    # Sección 1: Información Personal
+    st.header("🧍 Información Personal")
+    with st.container():
+        col1, col2 = st.columns(2)
+        nombre = col1.text_input("Nombre y apellidos")
+        edad = col2.number_input("Edad", min_value=0, max_value=120)
+        sexo = col1.selectbox("Sexo", ["Hombre", "Mujer", "Otro"])
+        fecha_nac = col2.date_input("Fecha de nacimiento")
 
-    # Mostrar resumen y generar PDF
-    if st.button("Generar resumen"):
-        st.subheader("Resumen")
-        st.write(f"*Nombre:* {nombre}")
-        st.write(f"*Edad:* {edad}")
-        st.write(f"*Sexo:* {sexo}")
-        st.write(f"*Fecha de nacimiento:* {fecha_nac}")
-        st.write(f"*Ejercicio regular:* {ejercicio}")
-        st.write(f"*Consumo de alcohol:* {alcohol}")
-        st.write(f"*Fuma o ha fumado:* {fumador}")
-        st.write(f"*Gen seleccionado:* {gen}")
-        st.write(f"*Medicamento seleccionado:* {medicamento}")
-        st.write(f"*Alelo seleccionado:* {alelo}")
-        st.write(f"*Recomendación:* {recomendacion}")
+    st.markdown("---")
 
+    # Sección 2: Estilo de Vida
+    st.header("🏋️ Estilo de Vida")
+    with st.container():
+        ejercicio = st.radio("¿Realiza ejercicio regularmente?", ["Sí", "No"], index=0, horizontal=True)
+        alcohol = st.radio("¿Consume alcohol regularmente?", ["Sí", "No"], index=0, horizontal=True)
+        fumador = st.radio("¿Fuma o ha fumado alguna vez?", ["Sí", "No"], index=0, horizontal=True)
+
+    st.markdown("---")
+
+    # Sección 3: Selección de Genes y Medicamentos
+    st.header("🧬 Selección de Genes y Medicamentos")
+    with st.container():
+        gen = st.selectbox("Selecciona un gen", ["CYP2D6", "CYP2C19", "SLCO1B1"])
+        medicamento = st.selectbox("Selecciona un medicamento", ["Venlafaxina", "Clopidogrel", "Atorvastatina"])
+        alelo = st.selectbox("Selecciona un alelo", ["*1/*1", "*1/*10", "*2/*17"])
+
+    # Mostrar recomendación
+    st.subheader("🔍 Recomendación")
+    recomendacion = "Tratamiento con dosis normal"
+    st.success(f"**{recomendacion}**")
+
+    st.markdown("---")
+
+    # Resumen en tarjeta
+    st.header("📋 Resumen")
+    with st.expander("Mostrar Resumen", expanded=True):
+        st.write(f"""
+        **Nombre:** {nombre}  
+        **Edad:** {edad}  
+        **Sexo:** {sexo}  
+        **Fecha de nacimiento:** {fecha_nac.strftime('%d/%m/%Y')}  
+        **Ejercicio regular:** {ejercicio}  
+        **Consumo de alcohol:** {alcohol}  
+        **Fuma o ha fumado:** {fumador}  
+        **Gen seleccionado:** {gen}  
+        **Medicamento seleccionado:** {medicamento}  
+        **Alelo seleccionado:** {alelo}  
+        **Recomendación:** {recomendacion}
+        """)
+
+    # Botón para descargar PDF
+    st.markdown("---")
+    if st.button("Descargar resumen en PDF"):
         pdf_data = generar_pdf(
-            nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion
+            nombre=nombre,
+            edad=edad,
+            sexo=sexo,
+            fecha_nac=fecha_nac.strftime('%d/%m/%Y'),
+            ejercicio=ejercicio,
+            alcohol=alcohol,
+            fumador=fumador,
+            gen=gen,
+            medicamento=medicamento,
+            alelo=alelo,
+            recomendacion=recomendacion
         )
         st.download_button(
-            label="Descargar PDF",
+            label="📥 Descargar PDF",
             data=pdf_data,
             file_name="recomendaciones_farmacogeneticas.pdf",
-            mime="application/pdf",
-            )
+            mime="application/pdf",)
