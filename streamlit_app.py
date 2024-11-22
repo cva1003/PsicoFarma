@@ -199,25 +199,34 @@ diccionario_combinado = {
 import streamlit as st
 from fpdf import FPDF
 from io import BytesIO
+import time
+
 
 # Función para generar el PDF con el logo centrado
 def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion):
     pdf = FPDF()
     pdf.add_page()
     
-    # Insertar logo centrado y más grande
-    pdf.image("logo.png", x=60, y=10, w=90)  # Ajusta posición (x, y) y tamaño (w)
+    # Tamaño y posición del logo en el PDF
+    logo_width = 90  # Anchura del logo en mm
+    page_width = 210  # Anchura total de la página A4
+    logo_x = (page_width - logo_width) / 2  # Posición horizontal centrada
+    logo_y = 20  # Posición vertical
 
+    # Insertar logo
+    pdf.image("logo.png", x=logo_x, y=logo_y, w=logo_width)
+
+    # Título debajo del logo
     pdf.set_font("Arial", style="B", size=16)
-    pdf.ln(50)  # Mover hacia abajo para dejar espacio después del logo
+    pdf.ln(logo_y + 50)  # Espaciado hacia abajo
     pdf.cell(0, 10, "Recomendaciones Farmacogenéticas", ln=True, align="C")
     pdf.ln(10)
 
     # Línea separadora
     pdf.set_draw_color(0, 123, 255)  # Azul
     pdf.set_line_width(0.5)
-    pdf.line(10, 60, 200, 60)
-    pdf.ln(15)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(10)
 
     # Contenido del PDF
     pdf.set_font("Arial", size=12)
@@ -253,44 +262,88 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
     pdf_output.seek(0)
     return pdf_output
 
-# Mostrar logo centrado y más grande en la página web
-st.image("logo.png", use_column_width=False, width=250)  # Tamaño ajustado
+# Centrar logo en la página web
+# Configuración de la página principal
+st.set_page_config(page_title="Recomendaciones Farmacogenéticas", layout="centered")
 
-st.title("Recomendaciones Farmacogenéticas")
-st.write("Esta aplicación proporciona recomendaciones basadas en genes y medicamentos.")
+# Variables de sesión para el inicio de sesión
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-# Formulario de entrada
-nombre = st.text_input("Nombre y apellidos", "Pablo Fuentes")
-edad = st.number_input("Edad", value=20)
-sexo = st.selectbox("Sexo", ["Hombre", "Mujer"])
-fecha_nac = st.date_input("Fecha de nacimiento")
-ejercicio = st.radio("¿Realizas ejercicio regularmente?", ["Sí", "No"])
-alcohol = st.radio("¿Consumes alcohol regularmente?", ["Sí", "No"])
-fumador = st.radio("¿Fumas o has fumado alguna vez?", ["Sí", "No"])
-gen = st.selectbox("Selecciona un gen", ["CYP2D6"])
-medicamento = st.selectbox("Selecciona un medicamento", ["Venlafaxina"])
-alelo = st.selectbox("Selecciona un alelo", ["*1/*10", "*1/*2", "*2/*2"])
-recomendacion = "Tratamiento con dosis normal"  # Este valor puedes calcularlo dinámicamente
-
-# Mostrar resumen y generar PDF
-if st.button("Generar resumen"):
-    st.subheader("Resumen")
-    st.write(f"**Nombre:** {nombre}")
-    st.write(f"**Edad:** {edad}")
-    st.write(f"**Sexo:** {sexo}")
-    st.write(f"**Fecha de nacimiento:** {fecha_nac}")
-    st.write(f"**Ejercicio regular:** {ejercicio}")
-    st.write(f"**Consumo de alcohol:** {alcohol}")
-    st.write(f"**Fuma o ha fumado:** {fumador}")
-    st.write(f"**Gen seleccionado:** {gen}")
-    st.write(f"**Medicamento seleccionado:** {medicamento}")
-    st.write(f"**Alelo seleccionado:** {alelo}")
-    st.write(f"**Recomendación:** {recomendacion}")
-
-    pdf_data = generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion)
-    st.download_button(
-        label="Descargar PDF",
-        data=pdf_data,
-        file_name="recomendaciones_farmacogeneticas.pdf",
-        mime="application/pdf"
+if not st.session_state.logged_in:
+    # Página de inicio
+    st.image("logo.png", width=250)
+    st.title("Bienvenido a Recomendaciones Farmacogenéticas")
+    st.write("""
+        Esta herramienta está diseñada para proporcionar recomendaciones de medicamentos personalizadas basadas en la información genética y el estilo de vida.
+        """)
+    with st.container():
+        st.markdown(
+          """
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="https://media.giphy.com/media/N5Adsn0dgz6h2/giphy.gif?cid=ecf05e47u1b7rvo3ilq8rc2rrnah91kavy10xytdnpzxmc9i&ep=v1_gifs_search&rid=giphy.gif&ct=g" 
+                alt="DNA Animation" style="width: 50%; height: auto; transform: rotate(90deg);">
+            </div>
+        """,
+        unsafe_allow_html=True,
     )
+
+    # Inicio de sesión ficticio
+    st.subheader("Inicio de Sesión")
+    with st.form("login_form"):
+        usuario = st.text_input("Usuario", placeholder="Introduce tu usuario")
+        contraseña = st.text_input("Contraseña", type="password", placeholder="Introduce tu contraseña")
+        enviar = st.form_submit_button("Iniciar sesión")
+
+    if enviar:
+        if usuario and contraseña:
+            st.success(f"Bienvenido/a, {usuario}.")
+            st.session_state.logged_in = True
+            time.sleep(1)
+            st.experimental_rerun()
+        else:
+            st.error("Por favor, completa ambos campos para iniciar sesión.")
+
+else:
+    # Página principal de la aplicación
+    st.image("logo.png", width=250)
+    st.title("Recomendaciones Farmacogenéticas")
+    st.write("Esta aplicación proporciona recomendaciones basadas en genes y medicamentos.")
+
+    # Formulario de entrada
+    nombre = st.text_input("Nombre y apellidos")
+    edad = st.number_input("Edad")
+    sexo = st.selectbox("Sexo", ["Hombre", "Mujer"])
+    fecha_nac = st.date_input("Fecha de nacimiento")
+    ejercicio = st.radio("¿Realizas ejercicio regularmente?", ["Sí", "No"])
+    alcohol = st.radio("¿Consumes alcohol regularmente?", ["Sí", "No"])
+    fumador = st.radio("¿Fumas o has fumado alguna vez?", ["Sí", "No"])
+    gen = st.selectbox("Selecciona un gen", ["CYP2D6"])
+    medicamento = st.selectbox("Selecciona un medicamento", ["Venlafaxina"])
+    alelo = st.selectbox("Selecciona un alelo", ["*1/*10", "*1/*2", "*2/*2"])
+    recomendacion = "Tratamiento con dosis normal"  # Este valor puedes calcularlo dinámicamente
+
+    # Mostrar resumen y generar PDF
+    if st.button("Generar resumen"):
+        st.subheader("Resumen")
+        st.write(f"*Nombre:* {nombre}")
+        st.write(f"*Edad:* {edad}")
+        st.write(f"*Sexo:* {sexo}")
+        st.write(f"*Fecha de nacimiento:* {fecha_nac}")
+        st.write(f"*Ejercicio regular:* {ejercicio}")
+        st.write(f"*Consumo de alcohol:* {alcohol}")
+        st.write(f"*Fuma o ha fumado:* {fumador}")
+        st.write(f"*Gen seleccionado:* {gen}")
+        st.write(f"*Medicamento seleccionado:* {medicamento}")
+        st.write(f"*Alelo seleccionado:* {alelo}")
+        st.write(f"*Recomendación:* {recomendacion}")
+
+        pdf_data = generar_pdf(
+            nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion
+        )
+        st.download_button(
+            label="Descargar PDF",
+            data=pdf_data,
+            file_name="recomendaciones_farmacogeneticas.pdf",
+            mime="application/pdf",
+            )
