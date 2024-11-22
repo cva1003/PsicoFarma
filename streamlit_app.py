@@ -424,33 +424,23 @@ else:
     recomendacion = ""
 
     # Bucle para buscar en el diccionario y construir la recomendación
-    for gen in genes:
-        for medicamento in medicamentos:
-            for tipo_de_alelo in tipos_de_alelo:
-                # Comprobar si el gen existe en el diccionario
-                if gen in diccionario_combinado:
-                    # Comprobar si el medicamento existe para el gen
-                    if medicamento in diccionario_combinado[gen]:
-                        # Obtener el tratamiento para el alelo, si existe
-                        tratamiento = diccionario_combinado[gen].get(medicamento, {}).get(tipo_de_alelo, "Alelo no encontrado para este medicamento")
-                        
-                        # Agregar la recomendación a la variable 'recomendacion'
-                        recomendacion += f"Tratamiento para {medicamento} y alelo {tipo_de_alelo} en gen {gen}: {tratamiento}\n"
-                        
-                        # Mostrar la recomendación en la interfaz de Streamlit
-                        st.success(f"**Tratamiento para {medicamento} y alelo {tipo_de_alelo} en gen {gen}: {tratamiento}**")
-                    else:
-                        st.warning(f"El medicamento {medicamento} no está listado para el gen {gen}.")
-                else:
-                    st.warning(f"El gen {gen} no está en el diccionario.")
-
-    # Si hay alguna recomendación generada, se puede mostrar o utilizar
+    if genes in diccionario_combinado:
+        if medicamentos in diccionario_combinado[genes]:
+            tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
+            recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
+            st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
+        else:
+            st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
+    else:
+        st.warning(f"El gen {genes} no está en el diccionario.")
+        # Si hay alguna recomendación generada, se puede mostrar o utilizar
+       
     if recomendacion:
         st.subheader("Recomendación Final")
         st.text(recomendacion)  # Mostrar la recomendación acumulada
         st.success(f"**{recomendacion}**")
 
-        st.markdown("---")
+    st.markdown("---")
 
     # Resumen en tarjeta
     st.header("📋 Resumen")
