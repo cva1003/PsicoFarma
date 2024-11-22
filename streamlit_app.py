@@ -453,8 +453,8 @@ else:
         **Ejercicio regular:** {ejercicio}  
         **Consumo de alcohol:** {alcohol}  
         **Fuma o ha fumado:** {fumador}  
-        **Gen seleccionado:** {gen}  
-        **Medicamento seleccionado:** {medicamento}  
+        **Gen seleccionado:** {genes}  
+        **Medicamento seleccionado:** {medicamentos}  
         **Alelo seleccionado:** {tipos_de_alelo}  
         **Recomendación:** {recomendacion}
         """)
@@ -471,8 +471,8 @@ else:
             enfermedades=enfermedades,
             alcohol=alcohol,
             fumador=fumador,
-            gen=gen,
-            medicamento=medicamento,
+            gen=genes,
+            medicamento=medicamentos,
             alelo=tipos_de_alelo,
             recomendacion=recomendacion
         )
