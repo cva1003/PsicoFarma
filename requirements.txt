@@ -1,5 +1,4 @@
-streamlit
-unicode
+streamlit==1.40.1
+fpdf2==2.5.7
 datetime
-io
-FPDF
+unicode
