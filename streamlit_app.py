@@ -356,6 +356,28 @@ else:
 
     st.markdown("---")
 
+    # Sección 3: Historial Médico
+    st.header("🩺 Historial Médico")
+    historial_medico = st.radio("¿Tienes alguna enfermedad preexistente?", ["Sí", "No"], index=1, horizontal=True)
+
+    # Si el usuario responde "Sí", permite ingresar las enfermedades
+    if historial_medico == "Sí":
+        st.markdown("### Por favor, indica tus enfermedades preexistentes.")
+        enfermedades = []
+        while True:
+            enfermedad = st.text_input("Escribe una enfermedad (o deja en blanco para terminar):")
+            if enfermedad.strip() == "":
+                break
+            enfermedades.append(enfermedad)
+            st.write("Enfermedades registradas hasta ahora: ", ", ".join(enfermedades))
+
+        if enfermedades:
+            st.success(f"Enfermedades indicadas: {', '.join(enfermedades)}")
+        else:
+            st.warning("No se ingresaron enfermedades preexistentes.")
+    else:
+        st.success("No se reportan enfermedades preexistentes.")
+
     # Sección 3: Selección de Genes y Medicamentos
     st.header("🧬 Selección de Genes y Medicamentos")
     with st.container():
@@ -396,6 +418,7 @@ else:
             sexo=sexo,
             fecha_nac=fecha_nac.strftime('%d/%m/%Y'),
             ejercicio=ejercicio,
+            enfermedades=enfermedades,
             alcohol=alcohol,
             fumador=fumador,
             gen=gen,
