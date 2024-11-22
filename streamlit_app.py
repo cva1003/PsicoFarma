@@ -420,27 +420,37 @@ else:
 ])
 
     # Mostrar recomendación
+    # Mostrar recomendación
     st.subheader("🔍 Recomendación")
     recomendacion = ""
 
-    # Bucle para buscar en el diccionario y construir la recomendación
+    # Lógica de búsqueda en el diccionario
     if genes in diccionario_combinado:
-        if medicamentos in diccionario_combinado[genes]:
-            tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
-            recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
-            st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
-        else:
-            st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
+        if genes == "CYP2C19":  # Manejo especial para CYP2C19
+            # Verificar si el medicamento seleccionado está en la lista de medicamentos de CYP2C19
+            if medicamentos in diccionario_combinado[genes]["Medicamentos"]:
+                # Buscar recomendación en la tabla de CYP2C19
+                tratamiento = diccionario_combinado[genes]["Tabla"].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
+                recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
+                st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
+            else:
+                st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
+        else:  # Manejo normal para CYP2D6
+            if medicamentos in diccionario_combinado[genes]:
+                tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
+                recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
+                st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
+            else:
+                st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
     else:
         st.warning(f"El gen {genes} no está en el diccionario.")
-        # Si hay alguna recomendación generada, se puede mostrar o utilizar
-       
+
+    # Mostrar recomendación acumulada, si existe
     if recomendacion:
         st.subheader("Recomendación Final")
         st.text(recomendacion)  # Mostrar la recomendación acumulada
         st.success(f"**{recomendacion}**")
 
-    st.markdown("---")
 
     # Resumen en tarjeta
     st.header("📋 Resumen")
