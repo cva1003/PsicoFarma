@@ -203,7 +203,7 @@ import time
 
 
 
-def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion):
+def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen, medicamento, alelo, recomendacion, enfermedades):
 
     pdf = FPDF()
     pdf.add_page()
@@ -256,6 +256,20 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
     pdf.cell(0, 10, f"Fuma o ha fumado: {'Sí' if fumador == 'Sí' else 'No'}", ln=True)
     pdf.ln(10)
 
+    # Historial médico
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(0, 10, "3. Historial Médico", ln=True, align="L")
+    pdf.set_font("Arial", size=12)
+    pdf.ln(5)
+    if enfermedades:
+        pdf.cell(0, 10, "Enfermedades preexistentes:", ln=True)
+        for enfermedad in enfermedades:
+            pdf.cell(0, 10, f"- {enfermedad}", ln=True)
+    else:
+        pdf.cell(0, 10, "No se reportan enfermedades preexistentes.", ln=True)
+    pdf.ln(10)
+
+
     # Información genética y médica
     pdf.set_font("Arial", style="B", size=14)
     pdf.cell(0, 10, "4. Información Genética y Médica", ln=True, align="L")
@@ -288,6 +302,8 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
     pdf_output.seek(0)
     return pdf_output
 
+if "enfermedades" not in st.session_state:
+    st.session_state["enfermedades"] = []
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -360,6 +376,32 @@ else:
     st.markdown("---")
 
     # Sección 3: Historial Médico
+    st.header("🩺 Historial Médico")
+    historial_medico = st.radio("¿Tienes alguna enfermedad preexistente?", ["Sí", "No"], index=1, horizontal=True)
+
+    # Si el usuario responde "Sí", permite ingresar las enfermedades
+    if historial_medico == "Sí":
+        st.markdown("### Por favor, indica tus enfermedades preexistentes.")
+        enfermedades = st.session_state.get("enfermedades", [])
+        nueva_enfermedad = st.text_input("Escribe una enfermedad (o deja en blanco para terminar):", key="input_enfermedad")
+
+        # Botón para agregar enfermedades
+        if st.button("Agregar enfermedad"):
+            if nueva_enfermedad.strip() != "":
+                enfermedades.append(nueva_enfermedad)
+                st.session_state["enfermedades"] = enfermedades
+                st.success(f"Enfermedad '{nueva_enfermedad}' registrada.")
+            else:
+                st.warning("El campo está vacío, escribe una enfermedad antes de agregar.")
+
+        # Mostrar las enfermedades registradas
+        if enfermedades:
+            st.write("Enfermedades registradas: ", ", ".join(enfermedades))
+        else:
+            st.warning("Aún no se han registrado enfermedades.")
+
+    else:
+        st.success("No se reportan enfermedades preexistentes.")
     
 
     # Sección 3: Selección de Genes y Medicamentos
