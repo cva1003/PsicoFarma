@@ -301,6 +301,9 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
     pdf_output.seek(0)
     return pdf_output
 
+if "enfermedades" not in st.session_state:
+    st.session_state["enfermedades"] = []
+
 
 
 # Centrar logo en la página web
