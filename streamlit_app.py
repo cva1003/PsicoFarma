@@ -171,8 +171,26 @@ diccionario_combinado = {
         }
     },
     "CYP2C19": {
-        "Medicamentos": ["Citalopram", "Escitalopram", "Sertralina", "Venlafaxina"],
-        "Tabla": {
+        "Citalopram":{
+            "*17/*17": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Si citalopram o escitalopram son clínicamente apropiados y no se logra eficacia, aumentar dosis",
+            "*1/*17": "Tratamiento inicial normal, si el paciente no obtiene respuesta necesaria aumentar dosis o cambiar por un antidepresivo alterativo no metabolizado por CYP2C19.",
+            "*1/*1": "Tratamiento con dosis normal",
+            "*1/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*2": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*3": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*3/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*2": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*1/*12": "No recomendaciones",
+            "*2/*12": "No recomendaciones",
+            "*12/*14": "No recomendaciones"},
+        "Escitalopram":{
             "*17/*17": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Si citalopram o escitalopram son clínicamente apropiados y no se logra eficacia, aumentar dosis",
             "*1/*17": "Tratamiento inicial normal, si el paciente no obtiene respuesta necesaria aumentar dosis o cambiar por un antidepresivo alterativo no metabolizado por CYP2C19.",
             "*1/*1": "Tratamiento con dosis normal",
@@ -191,8 +209,47 @@ diccionario_combinado = {
             "*1/*12": "No recomendaciones",
             "*2/*12": "No recomendaciones",
             "*12/*14": "No recomendaciones"
-        }
-        
+        },
+        "Sertralina":{
+            "*17/*17": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Si citalopram o escitalopram son clínicamente apropiados y no se logra eficacia, aumentar dosis",
+            "*1/*17": "Tratamiento inicial normal, si el paciente no obtiene respuesta necesaria aumentar dosis o cambiar por un antidepresivo alterativo no metabolizado por CYP2C19.",
+            "*1/*1": "Tratamiento con dosis normal",
+            "*1/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*2": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*3": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*3/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*2": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*1/*12": "No recomendaciones",
+            "*2/*12": "No recomendaciones",
+            "*12/*14": "No recomendaciones"
+        },
+        "Venlafaxina":{
+             "*17/*17": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Si citalopram o escitalopram son clínicamente apropiados y no se logra eficacia, aumentar dosis",
+            "*1/*17": "Tratamiento inicial normal, si el paciente no obtiene respuesta necesaria aumentar dosis o cambiar por un antidepresivo alterativo no metabolizado por CYP2C19.",
+            "*1/*1": "Tratamiento con dosis normal",
+            "*1/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*9/*9": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales. ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*2": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*1/*3": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*3/*17": "Tratamiento con dosis inicial recomendada. Considerar programa de valoración más lento o una dosis de mantenimiento más baja que los metabolizadores normales ** Tener cuidado con otros medicamentos ejm: renales e hígado",
+            "*2/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*9": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*2": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*3/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*2/*3": "Cambio de antidepresivo por uno no metabolizado por CYP2C19. Reducción al 50% de la dosis. ** dosis de citalopram 20mg/day máxima",
+            "*1/*12": "No recomendaciones",
+            "*2/*12": "No recomendaciones",
+            "*12/*14": "No recomendaciones"
+        }      
     }
 }
 
@@ -424,32 +481,23 @@ else:
     st.subheader("🔍 Recomendación")
     recomendacion = ""
 
-    # Lógica de búsqueda en el diccionario
+    # Verificar si el gen está en el diccionario
     if genes in diccionario_combinado:
-        if genes == "CYP2C19":  # Manejo especial para CYP2C19
-            # Verificar si el medicamento seleccionado está en la lista de medicamentos de CYP2C19
-            if medicamentos in diccionario_combinado[genes]["Medicamentos"]:
-                # Buscar recomendación en la tabla de CYP2C19
-                tratamiento = diccionario_combinado[genes]["Tabla"].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
-                recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
-                st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
-            else:
-                st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
-        else:  # Manejo normal para CYP2D6
-            if medicamentos in diccionario_combinado[genes]:
-                tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
-                recomendacion += f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**\n"
-                st.success(f"**Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}**")
-            else:
-                st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
+        # Verificar si el medicamento está listado para el gen
+        if medicamentos in diccionario_combinado[genes]:
+            # Buscar tratamiento para el alelo seleccionado
+            tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
+            recomendacion = f"Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}"
+            st.success(recomendacion)
+        else:
+            st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
     else:
         st.warning(f"El gen {genes} no está en el diccionario.")
 
-    # Mostrar recomendación acumulada, si existe
+    # Mostrar recomendación final si existe
     if recomendacion:
         st.subheader("Recomendación Final")
-        st.text(recomendacion)  # Mostrar la recomendación acumulada
-        st.success(f"**{recomendacion}**")
+        st.text(recomendacion)
 
 
     # Resumen en tarjeta
