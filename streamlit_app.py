@@ -298,7 +298,7 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
 
     # Salida del PDF
     pdf_output = BytesIO()
-    pdf_output.write(pdf.output(dest="S").encode("latin1"))
+    pdf_output.write(pdf.output(dest="S"))
     pdf_output.seek(0)
     return pdf_output
 
