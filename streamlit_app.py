@@ -326,7 +326,7 @@ if not st.session_state.logged_in:
             st.success(f"Bienvenido/a, {usuario}.")
             st.session_state.logged_in = True
             time.sleep(1)
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("Por favor, completa ambos campos para iniciar sesión.")
 
