@@ -494,10 +494,6 @@ else:
     else:
         st.warning(f"El gen {genes} no está en el diccionario.")
 
-    # Mostrar recomendación final si existe
-    if recomendacion:
-        st.subheader("Recomendación Final")
-        st.text(recomendacion)
 
 
     # Resumen en tarjeta
