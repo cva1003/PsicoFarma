@@ -521,7 +521,6 @@ else:
             sexo=sexo,
             fecha_nac=fecha_nac.strftime('%d/%m/%Y'),
             ejercicio=ejercicio,
-            enfermedades=enfermedades,
             alcohol=alcohol,
             fumador=fumador,
             gen=genes,
