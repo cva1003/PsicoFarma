@@ -313,20 +313,6 @@ def generar_pdf(nombre, edad, sexo, fecha_nac, ejercicio, alcohol, fumador, gen,
     pdf.cell(0, 10, f"Fuma o ha fumado: {'Sí' if fumador == 'Sí' else 'No'}", ln=True)
     pdf.ln(10)
 
-    # Historial médico
-    pdf.set_font("Arial", style="B", size=14)
-    pdf.cell(0, 10, "3. Historial Médico", ln=True, align="L")
-    pdf.set_font("Arial", size=12)
-    pdf.ln(5)
-    if enfermedades:
-        pdf.cell(0, 10, "Enfermedades preexistentes:", ln=True)
-        for enfermedad in enfermedades:
-            pdf.cell(0, 10, f"- {enfermedad}", ln=True)
-    else:
-        pdf.cell(0, 10, "No se reportan enfermedades preexistentes.", ln=True)
-    pdf.ln(10)
-
-
     # Información genética y médica
     pdf.set_font("Arial", style="B", size=14)
     pdf.cell(0, 10, "4. Información Genética y Médica", ln=True, align="L")
