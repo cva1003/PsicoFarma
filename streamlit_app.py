@@ -195,114 +195,57 @@ diccionario_combinado = {
         
     }
 }
-def obtener_informacion_medica(diccionario_combinado):
-    from datetime import datetime
-    from unidecode import unidecode
-    
-    # Función para comprobar y normalizar respuestas con "sí" o "no"
-    def obtener_respuesta(pregunta):
-        while True:
-            respuesta = input(pregunta)
-            respuesta_normalizada = unidecode(respuesta.lower())  # Eliminar tildes y pasar a minúsculas
-            if respuesta_normalizada == "si" or respuesta_normalizada == "no":
-                return respuesta_normalizada
-            else:
-                print("Respuesta inválida. Por favor, responde con 'Sí' o 'No'.")
-    
-    # Función para ingresar una lista de elementos (genes, medicamentos, tipos de alelos)
-    def ingresar_lista(pregunta):
-        lista = []
-        while True:
-            item = input(pregunta)
-            if item.lower() == "fin":
-                break  # Termina el bucle si el usuario escribe "fin"
-            lista.append(item)  # Agrega el ítem a la lista
-        return lista
-    
-    # Introducir nombre y apellidos
-    nom_ap = input("Introduce nombre y apellidos: ")
-    print(f"\nEl nombre ingresado es: {nom_ap}")
-    
-    # Solicitar la edad
-    while True:
-        try:
-            edad = int(input("Por favor, introduce tu edad: "))
-            if edad >= 0:
-                print(f"La edad ingresada es: {edad}")
-                break  # Si es válida, salimos del bucle
-            else:
-                print("Por favor, introduce una edad válida (un número entero positivo).")
-        except ValueError:
-            print("Entrada no válida. Asegúrate de introducir un número entero.")
-    
-    # Solicitar el sexo e ingresar un valor válido
-    while True:
-        sexo = input("Introduce tu sexo (Hombre/Mujer): ").capitalize()  # Capitaliza la primera letra para evitar errores de mayúsculas/minúsculas
-        if sexo in ["Hombre", "Mujer"]:
-            print(f"El sexo ingresado es: {sexo}")
-            break  # Si el sexo es válido, salir del bucle
-        else:
-            print("Por favor, introduce 'Hombre' o 'Mujer' como respuesta válida.")
-    
-    # Realizar preguntas sobre estilo de vida
-    ejercicio = obtener_respuesta("¿Realizas ejercicio regularmente? (Sí/No): ")
-    alcohol = obtener_respuesta("¿Consumes alcohol regularmente? (Sí/No): ")
-    tabaco = obtener_respuesta("¿Fumas o has fumado alguna vez? (Sí/No): ")
-    
-    # Validar la fecha de nacimiento
-    while True:
-        fecha = input("Introduce tu fecha de nacimiento (dd/mm/yyyy): ")
-        try:
-            fecha_valida = datetime.strptime(fecha, "%d/%m/%Y")
-            print(f"La fecha ingresada es: {fecha_valida.strftime('%d/%m/%Y')}")
-            break  # Si la fecha es válida, salimos del bucle
-        except ValueError:
-            print("Fecha no válida. Por favor, introduce una fecha en el formato correcto (dd/mm/yyyy).")
-    
-    # Historial médico
-    historial_medico = obtener_respuesta("¿Tienes alguna enfermedad preexistente? (Sí/No): ")
-    if historial_medico == "si":
-        enfermedades = []  # Lista para almacenar las enfermedades
-        while True:
-            enfermedad = input("Por favor, indica una enfermedad (o escribe 'fin' para terminar): ")
-            if enfermedad.lower() == "fin":
-                break  # Termina el bucle si el usuario escribe "fin"
-            else:
-                enfermedades.append(enfermedad)  # Agrega la enfermedad a la lista
-        print("Enfermedades indicadas: ", ", ".join(enfermedades))  # Muestra la lista de enfermedades
-    else:
-        print("No se reportan enfermedades preexistentes.")
-    
-    # Ingresar genes, medicamentos y tipos de alelos
-    print("\nAhora vamos a ingresar los genes, medicamentos y tipos de alelos.")
-    genes = ingresar_lista("Introduce un gen (o escribe 'fin' para terminar): ")
-    medicamentos = ingresar_lista("Introduce un medicamento (o escribe 'fin' para terminar): ")
-    tipos_de_alelo = ingresar_lista("Introduce un tipo de alelo (o escribe 'fin' para terminar): ")
-    
-    # Mostrar las listas ingresadas
-    print("\nGenes ingresados:", genes)
-    print("Medicamentos ingresados:", medicamentos)
-    print("Tipos de alelo ingresados:", tipos_de_alelo)
+# Título y descripción de la app
+st.title("Recomendaciones Farmacogenéticas")
+st.markdown("""
+Esta aplicación proporciona recomendaciones basadas en genes y medicamentos.  
+Selecciona las opciones relevantes para obtener información personalizada.
+""")
 
-    # Separación visual entre la entrada y la búsqueda
-    print("\n=====================================")
-    print("Ahora se mostrarán los resultados de la búsqueda en el diccionario:\n")
-    
-    # Iterar sobre los genes, medicamentos y alelos
-    for gen in genes:
-        for medicamento in medicamentos:
-            for tipo_de_alelo in tipos_de_alelo:
-                # Comprobar si el gen existe en el diccionario
-                if gen in diccionario_combinado:
-                    # Comprobar si el medicamento existe para el gen
-                    if medicamento in diccionario_combinado[gen]:
-                        # Obtener el tratamiento para el alelo, si existe
-                        tratamiento = diccionario_combinado[gen].get(medicamento, {}).get(tipo_de_alelo, "Alelo no encontrado para este medicamento")
-                        print(f"Tratamiento para {medicamento} y alelo {tipo_de_alelo} en gen {gen}: {tratamiento}")
-                    else:
-                        print(f"El medicamento {medicamento} no está listado para el gen {gen}.")
-                else:
-                    print(f"El gen {gen} no está en el diccionario.")
+# Paso 1: Ingreso de información personal
+st.header("Información Personal")
+nombre = st.text_input("Nombre y apellidos")
+edad = st.number_input("Edad", min_value=0, step=1)
+sexo = st.selectbox("Sexo", options=["Hombre", "Mujer"])
+fecha_nacimiento = st.date_input("Fecha de nacimiento")
 
-# Llamar a la función pasando el diccionario combinado
-obtener_informacion_medica(diccionario_combinado)
+# Paso 2: Estilo de vida
+st.header("Estilo de Vida")
+ejercicio = st.radio("¿Realizas ejercicio regularmente?", ["Sí", "No"])
+alcohol = st.radio("¿Consumes alcohol regularmente?", ["Sí", "No"])
+tabaco = st.radio("¿Fumas o has fumado alguna vez?", ["Sí", "No"])
+
+# Paso 3: Selección de genes y medicamentos
+st.header("Selección de Genes y Medicamentos")
+gen_seleccionado = st.selectbox("Selecciona un gen", options=list(diccionario_combinado.keys()))
+
+if gen_seleccionado:
+    medicamentos = diccionario_combinado[gen_seleccionado].keys()
+    medicamento_seleccionado = st.selectbox("Selecciona un medicamento", options=medicamentos)
+
+    if medicamento_seleccionado and medicamento_seleccionado != "Medicamentos":
+        alelos = diccionario_combinado[gen_seleccionado][medicamento_seleccionado].keys()
+        alelo_seleccionado = st.selectbox("Selecciona un alelo", options=alelos)
+
+        # Mostrar recomendación
+        if alelo_seleccionado:
+            recomendacion = diccionario_combinado[gen_seleccionado][medicamento_seleccionado][alelo_seleccionado]
+            st.subheader("Recomendación")
+            st.write(recomendacion)
+
+# Paso 4: Resultados y resumen
+st.header("Resumen")
+if st.button("Mostrar Resumen"):
+    st.write(f"**Nombre:** {nombre}")
+    st.write(f"**Edad:** {edad}")
+    st.write(f"**Sexo:** {sexo}")
+    st.write(f"**Fecha de nacimiento:** {fecha_nacimiento.strftime('%d/%m/%Y')}")
+    st.write(f"**Ejercicio regular:** {ejercicio}")
+    st.write(f"**Consumo de alcohol:** {alcohol}")
+    st.write(f"**Fuma o ha fumado:** {tabaco}")
+
+    if alelo_seleccionado:
+        st.write(f"**Gen seleccionado:** {gen_seleccionado}")
+        st.write(f"**Medicamento seleccionado:** {medicamento_seleccionado}")
+        st.write(f"**Alelo seleccionado:** {alelo_seleccionado}")
+        st.write(f"**Recomendación:** {recomendacion}")
