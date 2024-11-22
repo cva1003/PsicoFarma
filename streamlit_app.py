@@ -195,6 +195,8 @@ diccionario_combinado = {
         
     }
 }
+
+import streamlit as st
 # Título y descripción de la app
 st.title("Recomendaciones Farmacogenéticas")
 st.markdown("""
