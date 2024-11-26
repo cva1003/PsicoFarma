@@ -413,7 +413,7 @@ else:
     with st.container():
         ejercicio = st.radio("¿Realiza ejercicio regularmente?", ["Sí", "No"], index=0, horizontal=True)
         alcohol = st.radio("¿Consume alcohol regularmente?", ["Sí", "No"], index=0, horizontal=True)
-        fumador = st.radio("¿Fuma o ha fumado alguna vez?", ["Sí", "No"], index=0, horizontal=True)
+        fumador = st.radio("¿Fuma?", ["Sí", "No"], index=0, horizontal=True)
 
     st.markdown("---")
 
@@ -449,9 +449,9 @@ else:
     # Sección 3: Selección de Genes y Medicamentos
     st.header("🧬 Selección de Genes y Medicamentos")
     with st.container():
-        genes = st.selectbox("Selecciona un gen", ["CYP2D6", "CYP2C19"])
-        medicamentos = st.selectbox("Selecciona un medicamento", ["Venlafaxina", "Risperidsona", "Haloperidol","Aripiprazol","Citalopram","Escitalopram","Sertralina"])
-        tipos_de_alelo = st.selectbox("Selecciona un alelo", [
+        genes = st.multiselect("Selecciona un gen", ["CYP2D6", "CYP2C19"])
+        medicamentos = st.multiselect("Selecciona un medicamento", ["Venlafaxina", "Risperidsona", "Haloperidol","Aripiprazol","Citalopram","Escitalopram","Sertralina"])
+        tipos_de_alelo = st.multiselect("Selecciona un alelo", [
     "*1/*1xN", "*1/*2xN", "*1/*10", "*1/*9", "*1/*41", "*1/*17", "*1/*29", "*1/*10x3", "*2x2/*10", 
     "*4/*10", "*4/*41", "*10/*10", "*10/*41", "*10/*29", "*9/*14", "*17/*41", "*1/*5", "*1/*4", "*3/*4", 
     "*4/*4", "*5/*5", "*5/*6", "*1/*22", "*1/*25", "*22/*25", "*1/*3xN", "*2/*3xN", "*1/*2", "*2/*2", "*35/*2", 
@@ -467,17 +467,30 @@ else:
     recomendacion = ""
 
     # Verificar si el gen está en el diccionario
-    if genes in diccionario_combinado:
-        # Verificar si el medicamento está listado para el gen
-        if medicamentos in diccionario_combinado[genes]:
-            # Buscar tratamiento para el alelo seleccionado
-            tratamiento = diccionario_combinado[genes][medicamentos].get(tipos_de_alelo, "Alelo no encontrado para este medicamento")
-            recomendacion = f"Tratamiento para {medicamentos} y alelo {tipos_de_alelo} en gen {genes}: {tratamiento}"
+    if genes and medicamentos and tipos_de_alelo:
+        recomendaciones = []
+        for gen in genes:
+            if gen in diccionario_combinado:
+                for medicamento in medicamentos:
+                    if medicamento in diccionario_combinado[gen]:
+                        for alelo in tipos_de_alelo:
+                            tratamiento = diccionario_combinado[gen][medicamento].get(
+                                alelo, "Alelo no encontrado para este medicamento"
+                            )
+                            recomendaciones.append(
+                                f"Gen: {gen}, Medicamento: {medicamento}, Alelo: {alelo}, Tratamiento: {tratamiento}"
+                            )
+                    else:
+                        recomendaciones.append(f"El medicamento {medicamento} no está listado para el gen {gen}.")
+            else:
+                recomendaciones.append(f"El gen {gen} no está en el diccionario.")
+
+        # Mostrar todas las recomendaciones
+        for recomendacion in recomendaciones:
             st.success(recomendacion)
-        else:
-            st.warning(f"El medicamento {medicamentos} no está listado para el gen {genes}.")
     else:
-        st.warning(f"El gen {genes} no está en el diccionario.")
+        st.warning("Por favor, selecciona al menos un gen, un medicamento y un alelo.")
+
 
 
 
