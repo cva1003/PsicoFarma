@@ -461,38 +461,41 @@ else:
     "*1/*3", "*2/*17", "*3/*17", "*2/*9", "*3/*9", "*2/*2", "*3/*3", "*2/*3", "*1/*12", "*2/*12", "*12/*14"
 ])
 
-    # Mostrar recomendación
-    # Mostrar recomendación
-    st.subheader("🔍 Recomendación")
-    recomendacion = ""
 
-    # Verificar si el gen está en el diccionario
-    # Mostrar recomendación ajustada
+  # Mostrar recomendación ajustada con mensajes de depuración
     st.subheader("🔍 Recomendación")
     recomendacion = ""
 
     # Generar recomendaciones para cada combinación seleccionada
     if genes and medicamentos and tipos_de_alelo:
-            recomendaciones = []
-            for gen in genes:
-                if gen in diccionario_combinado:  # Verifica si el gen está en el diccionario
-                    for medicamento in medicamentos:
-                        if medicamento in diccionario_combinado[gen]:  # Verifica si el medicamento está en el gen
-                            for alelo in tipos_de_alelo:
-                                # Consulta si el alelo tiene un tratamiento específico
-                                tratamiento = diccionario_combinado[gen][medicamento].get(alelo, "Alelo no encontrado para este medicamento")
-                                # Añade la recomendación a la lista
-                                recomendaciones.append(f"Gen: {gen}, Medicamento: {medicamento}, Alelo: {alelo}, Tratamiento: {tratamiento}")
-                        else:
-                            recomendaciones.append(f"El medicamento {medicamento} no está listado para el gen {gen}.")
-                else:
-                    recomendaciones.append(f"El gen {gen} no está en el diccionario.")
+        recomendaciones = []
+        for gen in genes:
+            st.write(f"🔍 Revisando gen: {gen}")
+            if gen in diccionario_combinado:  # Verifica si el gen está en el diccionario
+                for medicamento in medicamentos:
+                    st.write(f"   - Medicamento: {medicamento}")
+                    if medicamento in diccionario_combinado[gen]:  # Verifica si el medicamento está en el gen
+                        for alelo in tipos_de_alelo:
+                            st.write(f"      * Alelo: {alelo}")
+                            # Consulta si el alelo tiene un tratamiento específico
+                            tratamiento = diccionario_combinado[gen][medicamento].get(
+                                alelo, "Alelo no encontrado para este medicamento"
+                            )
+                            # Añade la recomendación a la lista
+                            recomendaciones.append(
+                                f"Gen: {gen}, Medicamento: {medicamento}, Alelo: {alelo}, Tratamiento: {tratamiento}"
+                            )
+                    else:
+                        recomendaciones.append(f"El medicamento {medicamento} no está listado para el gen {gen}.")
+            else:
+                recomendaciones.append(f"El gen {gen} no está en el diccionario.")
 
-            # Mostrar todas las recomendaciones en Streamlit
-            for recomendacion in recomendaciones:
-                st.success(recomendacion)
+        # Mostrar todas las recomendaciones en Streamlit
+        for recomendacion in recomendaciones:
+            st.success(recomendacion)
     else:
         st.warning("Por favor, selecciona al menos un gen, un medicamento y un alelo.")
+
 
 
 
